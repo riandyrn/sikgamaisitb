@@ -1,6 +1,6 @@
 <?php
 
-class MainModel extends MyModel
+class MainModel extends MY_Model
 {
 
 	/*

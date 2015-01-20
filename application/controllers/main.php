@@ -1,10 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-class Main extends MyController
+class Main extends MY_Controller
 {
-	
-	$base_path;
-	$seeAllKaderGamaisPath
+
+	private $seeAllKaderGamaisPath;
 	
 	public function __construct()
 	{
@@ -39,6 +38,11 @@ class Main extends MyController
 	{
 		$data['all_kader_gamais'] = $this->m_m->getAllKaderGamais();
 		$this->displayView('seeAllKaderGamais', $data);
+	}
+	
+	public function index()
+	{
+		$this->seeAllKaderGamais();
 	}
 	
 	/*** FUNGSI-FUNGSI PROSES ***/
