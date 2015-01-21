@@ -28,7 +28,7 @@
 
     <!-- Custom Fonts -->
     <link href="<?=$assets;?>bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -81,6 +81,8 @@
     <script src="<?=$assets;?>bower_components/DataTables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?=$assets;?>bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 	
+	<!-- DateFormat Script -->
+	<script src="<?=$assets;?>js/date.format.js"></script>
 </head>
 
 <body>

@@ -44,7 +44,38 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="">Tanggal Lahir:</label> 
-					<input id="tanggal_lahir" type="text" class="form-control" placeholder="Masukkan tanggal lahir disini...">
+					
+					<div class="row">
+						<div class="col-md-3">
+							<label for=""><small>Tanggal</small></label>
+							<input id="tanggal_lahir" type="text" class="form-control" placeholder="5">
+						</div>
+						<div class="col-md-5" style="padding-left: 0; padding-right: 0;">
+							<label for=""><small>Bulan</small></label>
+							<select name="" id="bulan_lahir" class="form-control">
+								<option value="1">Januari</option>
+								<option value="2">Februari</option>
+								<option value="3">Maret</option>
+								<option value="4">April</option>
+								<option value="5">Mei</option>
+								<option value="6">Juni</option>
+								<option value="7">Juli</option>
+								<option value="8">Agustus</option>
+								<option value="9">September</option>
+								<option value="10">Oktober</option>
+								<option value="11">November</option>
+								<option value="12">Desember</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<label for=""><small>Tahun</small></label>
+							<input id="tahun_lahir" type="text" class="form-control" placeholder="1993">
+						</div>
+					</div>
+					
+					<!--
+						<input id="tanggal_lahir" type="text" class="form-control" placeholder="Masukkan tanggal lahir disini...">
+					-->
 				</div>
 				<div class="form-group">
 					<label for="">Alamat Libur:</label>

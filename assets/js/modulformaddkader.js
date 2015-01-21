@@ -93,13 +93,19 @@ function saveDataToPostVar()
 	postVar.hp = $( '#hp' ).val();
 	postVar.email = $( '#email' ).val();
 	postVar.tempat_lahir = $( '#tempat_lahir' ).val();
-	postVar.tanggal_lahir = $( '#tanggal_lahir' ).val();
+	postVar.tanggal_lahir = constructTanggalLahir($( '#tanggal_lahir' ).val(), $( '#bulan_lahir' ).val(), $( '#tahun_lahir' ).val());
 	postVar.alamat_libur = $( '#alamat_libur' ).val();
 	postVar.alamat_bdg = $( '#alamat_bdg' ).val();
 	postVar.asal_sma = $( '#asal_sma' ).val();
 	postVar.hobi = $( '#hobi' ).val();
 	postVar.kondisi_mentoring = $( '#kondisi_mentoring' ).val();
 	postVar.data_akademik = $( '#data_akademik' ).val();
+}
+
+function constructTanggalLahir(day, month, year)
+{
+	var myDate = new Date(year, month - 1, day);
+	return myDate.format('Y-m-d'); 
 }
 
 function prepareDataModalKonfirmasi()
@@ -111,7 +117,9 @@ function prepareDataModalKonfirmasi()
 	$( '#angkatan_k' ).html(postVar.angkatan);
 	$( '#hp_k' ).html(postVar.hp);
 	$( '#email_k' ).html(postVar.email);
-	$( '#ttl_k' ).html(postVar.tempat_lahir + ', ' + postVar.tanggal_lahir);
+	
+	tanggal = new Date(postVar.tanggal_lahir);
+	$( '#ttl_k' ).html(postVar.tempat_lahir + ', ' + tanggal.format('d-M-Y'));
 	$( '#alamat_libur_k' ).html(postVar.alamat_libur);
 	$( '#alamat_bdg_k' ).html(postVar.alamat_bdg);
 	$( '#asal_sma_k' ).html(postVar.asal_sma);
