@@ -7,7 +7,6 @@ class MY_Controller extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('mainmodel', 'm_m');
 	}
 	
 	public function displayView($page, $data = array())
@@ -40,11 +39,7 @@ class MY_Controller extends CI_Controller
 	
 	public function notifyStateAJAX($state)
 	{
-		if($state) {
-			echo 1;
-		} else {
-			echo 0;
-		}
+		echo $state;
 	}
 	
 }

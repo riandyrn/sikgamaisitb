@@ -1,0 +1,11 @@
+Create pembinaan
+<form action="<?=$base_path;?>addPembinaan_P" method="POST">
+	<input type="text" name="agenda">
+	<input type="submit">
+</form>
+
+Test update pembinaan
+<form action="<?=$base_path;?>updatePembinaan_P/5" method="POST">
+	<input type="text" name="agenda">
+	<input type="submit">
+</form>

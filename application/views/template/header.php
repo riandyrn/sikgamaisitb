@@ -95,16 +95,21 @@
 							<a href="<?=$base_path;?>addKader" class="btn btn-primary btn-sm" style="margin-top: -5px;">
 								<span class="glyphicon glyphicon-plus"></span> Tambah Kader
 							</a>
+						<?php } else if ($current_page == 'updateInfoKader') {?>
+							<a href="<?=$base_path;?>seeInfoKader/<?=$id_kader;?>" class="btn btn-primary btn-sm" style="margin-top: -5px;">
+								<span class="glyphicon glyphicon-arrow-left"></span> Kembali ke info kader
+							</a>
 						<?php } else { ?>
 							<a href="<?=$base_path;?>seeAllKaderGamais" class="btn btn-primary btn-sm" style="margin-top: -5px;">
-								<span class="fa fa-users"></span> Lihat Kader Gamais ITB
+								<span class="glyphicon glyphicon-arrow-left"></span> Kembali ke list kader
+								<!--<span class="fa fa-users"></span> Lihat Kader Gamais ITB-->
 							</a>
 						<?php } ?>
 						
-						<a href="" class="btn btn-link btn-sm pull-right" style="margin-top: 5px;">
+						<a href="#" data-target="#modal_underdev" data-toggle="modal" class="btn btn-link btn-sm pull-right" style="margin-top: 5px;">
 							<span class="fa fa-sign-out fa-fw"></span> Sign Out  
 						</a>
-						<a href="" class="btn btn-link btn-sm pull-right" style="margin-top: 5px;">
+						<a href="#" data-target="#modal_underdev" data-toggle="modal" class="btn btn-link btn-sm pull-right" style="margin-top: 5px;">
 							<span class="fa fa-cog fa-fw"></span> Ganti Password  
 						</a>
 					</h1>
@@ -113,3 +118,21 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+			
+			<div class="modal fade" id="modal_underdev" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Fitur masih dalam pengembangan</h4>
+				  </div>
+				  <div class="modal-body">
+					<p style="font-size: 14em; text-align: center;">:(</p>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>			
+			

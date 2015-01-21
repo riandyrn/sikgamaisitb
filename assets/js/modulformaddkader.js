@@ -13,17 +13,33 @@ $( '#btn_batal' ).click(function(){
 });
 
 $( '#btn_simpan' ).click(function(){
-	sendDataToServer(page, redirectURL);
+	sendDataToServer(pathAddKader, redirectURL);
 	clearPostVar();
 });
 
-function setPageRedirectURL(pg, url)
+$( '#btn_update' ).click(function(){
+	id_kader = $(this).data('id');
+	
+	$.post(pathUpdateKader + '/' + id_kader, postVar, function(state){
+		console.log(state);
+		window.location.replace(redirectURL + '/' + id_kader);
+	});
+});
+
+function setupAddKader(pg, url)
 {
-	page = pg;
+	pathAddKader = pg;
 	redirectURL = url;
 }
 
-var page;
+function setUpdateKader(pg, url)
+{
+	pathUpdateKader = pg;
+	redirectURL = url;
+}
+
+var pathAddKader;
+var pathUpdateKader;
 var redirectURL;
 
 var postVar = 
@@ -35,7 +51,7 @@ var postVar =
 	angkatan: '',
 	hp: '',
 	email: '',
-	tampat_lahir: '',
+	tempat_lahir: '',
 	tanggal_lahir: '',
 	alamat_libur: '',
 	alamat_bdg: '',
@@ -56,7 +72,7 @@ function clearPostVar()
 		angkatan: '',
 		hp: '',
 		email: '',
-		tampat_lahir: '',
+		tempat_lahir: '',
 		tanggal_lahir: '',
 		alamat_libur: '',
 		alamat_bdg: '',
@@ -174,9 +190,10 @@ function checkIsFormValid()
 	return (postVar.nama_lengkap != '') && (postVar.nama_panggilan != '') && (postVar.nim != '') && (postVar.jurusan != '') && (postVar.angkatan != '') && (postVar.hp != '') && (postVar.email != '') && (postVar.tempat_lahir != '') && (postVar.tanggal_lahir != '') && (postVar.nama_lengkap != '') && (postVar.alamat_libur != '') && (postVar.alamat_bdg != '') && (postVar.asal_sma != '') && (postVar.hobi != '');
 }
 
-function sendDataToServer(page, redirectURL)
+function sendDataToServer(pathAddKader, redirectURL)
 {
-	$.post(page, postVar, function(ret){
-		window.location.replace(redirectURL + ret);
+	$.post(pathAddKader, postVar, function(id){
+		//console.log(id);
+		window.location.replace(redirectURL + '/' + id);
 	});
 }

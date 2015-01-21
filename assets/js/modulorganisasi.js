@@ -1,7 +1,18 @@
-/*** CRUD Riwayat Pembinaan ***/
+/*** CRUD Riwayat Organisasi ***/
 
 var currentElementOrganisasi;
 var ctxIdOrganisasi;
+
+var pathAddOrganisasi;
+var pathUpdateOrganisasi;
+var pathDeleteOrganisasi;
+
+var postOrganisasi =
+{
+	tahun: '',
+	organisasi: '',
+	jabatan: ''
+}
 
 function setCtxIdOrganisasi(val)
 {
@@ -43,39 +54,55 @@ function showButtonOrganisasi(id_btn)
 
 function addOrganisasi(tahun, organisasi, jabatan)
 {
-	element = $(
-		"<tr>" +
-			"<td>" + tahun + "</td>" +
-			"<td>" + organisasi + "</td>" +
-			"<td>" + jabatan +"</td>" +
-			"<td><a href='#' class='btn-ubah-entri-organisasi'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
-			"<td><a href='#' class='btn-hapus-entri-organisasi'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +											
-		"</tr>"
-	);
+	postOrganisasi.tahun = tahun;
+	postOrganisasi.organisasi = organisasi;
+	postOrganisasi.jabatan = jabatan;
 	
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri organisasi berhasil ditambahkan');
-	
-	$( '#tabel_organisasi' ).prepend(element);
-	applyUbahHapusListenerOrganisasi(element);
+	$.post(pathAddOrganisasi, postOrganisasi, function(id){
+		console.log(id);
+		element = $(
+			"<tr data-id='"+ id +"'>" +
+				"<td>" + tahun + "</td>" +
+				"<td>" + organisasi + "</td>" +
+				"<td>" + jabatan +"</td>" +
+				"<td><a href='#' class='btn-ubah-entri-organisasi'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
+				"<td><a href='#' class='btn-hapus-entri-organisasi'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +											
+			"</tr>"
+		);
+		
+		sendSuccess('Entri organisasi berhasil ditambahkan');
+		
+		$( '#tabel_organisasi' ).prepend(element);
+		applyUbahHapusListenerOrganisasi(element);
+	});
 }
 
 function updateOrganisasi(element, tahun, organisasi, jabatan)
 {
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri organisasi berhasil diubah');
+	postOrganisasi.tahun = tahun;
+	postOrganisasi.organisasi = organisasi;
+	postOrganisasi.jabatan = jabatan;
 	
-	$(element).children('td:nth-child(1)').html(tahun);
-	$(element).children('td:nth-child(2)').html(organisasi);
-	$(element).children('td:nth-child(3)').html(jabatan);
+	id_entry = $(element).data('id');
+	
+	$.post(pathUpdateOrganisasi + '/' + id_entry, postOrganisasi, function(){
+		//ini nanti ditambahin fungsi post
+		sendSuccess('Entri organisasi berhasil diubah');
+		
+		$(element).children('td:nth-child(1)').html(tahun);
+		$(element).children('td:nth-child(2)').html(organisasi);
+		$(element).children('td:nth-child(3)').html(jabatan);
+	});
 }
 
 function removeOrganisasi(element)
 {
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri organisasi berhasil dihapus');
+	id_entry = $(element).data('id');
 	
-	$(element).remove();
+	$.post(pathDeleteOrganisasi + '/' + id_entry, postOrganisasi, function(){
+		sendSuccess('Entri organisasi berhasil dihapus');
+		$(element).remove();
+	});
 }				
 
 function closeModalOrganisasi()
@@ -125,8 +152,12 @@ function applyUbahHapusListenerOrganisasi(element)
 	
 }
 
-function setupOrganisasi()
+function setupOrganisasi(add, update, del)
 {	
+	pathAddOrganisasi = add;
+	pathUpdateOrganisasi = update;
+	pathDeleteOrganisasi = del;
+	
 	$( '.btn-tambah-entri-organisasi' ).click(function(){
 		$('#modal_organisasi_label').html('Tambah Organisasi');
 		showButtonOrganisasi(0);

@@ -10,6 +10,7 @@ class Main extends MY_Controller
 		parent::__construct();
 		$this->base_path = base_url() . 'index.php/main/';
 		$this->seeAllKaderGamaisPath = $this->base_path . 'seeAllKaderGamais';
+		$this->load->model('mainmodel', 'm_m');
 	}
 	
 	/*** FUNGSI-FUNGSI VIEW ***/
@@ -19,19 +20,37 @@ class Main extends MY_Controller
 		$this->displayView('addKader');
 	}
 	
-	public function seeInfoKader($id_kader)
+	public function updateInfoKader()
 	{
-		$this->session->set_userdata('id_kader', $id_kader);
-		
+		$id_kader = $this->session->userdata('id_kader');
 		$data = array
 		(
 			'info_kader' => $this->m_m->getInfoKader($id_kader),
-			'riwayat_organisasi' => $this->m_m->getRiwayatOrganisasi($id_kader),
-			'riwayat_kepanitiaan' => $this->m_m->getRiwayatKepanitiaan($id_kader),
-			'riwayat_pembinaan' => $this->m_m->getRiwayatPembinaan($id_kader)
+			'id_kader' => $id_kader
 		);
 		
-		$this->displayView('seeInfoKader', $data);
+		$this->displayView('updateInfoKader', $data);
+	}
+	
+	public function seeInfoKader($id_kader = null)
+	{
+		if($id_kader)
+		{
+			$this->session->set_userdata('id_kader', $id_kader);
+			
+			$data = array
+			(
+				'id_kader' => $id_kader,
+				'info_kader' => $this->m_m->getInfoKader($id_kader),
+				'riwayat_organisasi' => $this->m_m->getRiwayatOrganisasi($id_kader),
+				'riwayat_kepanitiaan' => $this->m_m->getRiwayatKepanitiaan($id_kader),
+				'riwayat_pembinaan' => $this->m_m->getRiwayatPembinaan($id_kader)
+			);
+			
+			$this->displayView('seeInfoKader', $data);
+		} else {
+			$this->index();
+		}
 	}
 	
 	public function seeAllKaderGamais()
@@ -50,7 +69,9 @@ class Main extends MY_Controller
 	public function addKader_P()
 	{
 		$state = $this->m_m->addKader($_POST);
-		$this->notifyState($state, 'Kader baru berhasil ditambahkan', 'Penambahan kader gagal dilakukan', $this->seeAllKaderGamaisPath);
+		echo $state;
+		
+		$this->notifyState($state, 'Kader baru berhasil ditambahkan', 'Penambahan kader gagal dilakukan');
 	}
 	
 	public function addOrganisasi_P()
@@ -71,36 +92,57 @@ class Main extends MY_Controller
 	{
 		$id_kader = $this->session->userdata('id_kader');
 		$state = $this->m_m->addPembinaan($id_kader, $_POST);
-		$this->notifyStateAJAX($state);	
+		$this->notifyStateAJAX($state);
 	}
 	
 	public function updateInfoKader_P()
 	{
 		$id_kader = $this->session->userdata('id_kader');
 		$state = $this->m_m->updateInfoKader($id_kader, $_POST);
+		$this->notifyState($state, 'Informasi kader berhasil diubah', 'Tidak ada perubahan pada informasi kader');		
+	}
+	
+	public function updateOrganisasi_P($id_entry)
+	{
+		$state = $this->m_m->updateOrganisasi($id_entry, $_POST);
 		$this->notifyStateAJAX($state);		
 	}
 	
-	public function updateOrganisasi_P()
+	public function updateKepanitiaan_P($id_entry)
 	{
-		$id_kader = $this->session->userdata('id_kader');
-		$state = $this->m_m->updateOrganisasi($id_kader, $_POST);
+		$state = $this->m_m->updateKepanitiaan($id_entry, $_POST);
 		$this->notifyStateAJAX($state);		
 	}
 	
-	public function updateKepanitiaan_P()
+	public function updatePembinaan_P($id_entry)
 	{
-		$id_kader = $this->session->userdata('id_kader');
-		$state = $this->m_m->updateKepanitiaan($id_kader, $_POST);
-		$this->notifyStateAJAX($state);		
-	}
-	
-	public function updatePembinaan_P()
-	{
-		$id_kader = $this->session->userdata('id_kader');
-		$state = $this->m_m->updatePembinaan($id_kader, $_POST);
+		$state = $this->m_m->updatePembinaan($id_entry, $_POST);
 		$this->notifyStateAJAX($state);	
 	}
+	
+	public function deletePembinaan_P($id_entry)
+	{
+		$state = $this->m_m->deletePembinaan($id_entry);
+		$this->notifyStateAJAX($state);
+	}
+	
+	public function deleteOrganisasi_P($id_entry)
+	{
+		$state = $this->m_m->deleteOrganisasi($id_entry);
+		$this->notifyStateAJAX($state);
+	}
+	
+	public function deleteKepanitiaan_P($id_entry)
+	{
+		$state = $this->m_m->deleteKepanitiaan($id_entry);
+		$this->notifyStateAJAX($state);
+	}
+	
+	public function deleteKader_P($id_kader)
+	{
+		$state = $this->m_m->deleteKader($id_kader);
+		$this->notifyStateAJAX($state);
+	}	
 }
 
 ?>

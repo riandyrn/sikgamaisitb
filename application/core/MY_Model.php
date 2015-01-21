@@ -29,7 +29,7 @@ class MY_Model extends CI_Model
 		} while(next($wheres));
 		
 		$this->db->update($table, $data);
-		return ($this->db->num_affected_rows() > 0);
+		return ($this->db->affected_rows() > 0);
 	}
 	
 	public function getData($table, $wheres = null, $customfields = null)
@@ -47,10 +47,24 @@ class MY_Model extends CI_Model
 			$this->db->select($customfields);
 		}
 		
+		$this->db->order_by('id','desc');
+		
 		$query = $this->db->get($table);
 		return $query->result();
 	}
+	
+	public function deleteData($table, $wheres = null)
+	{
+		if($wheres)
+		{
+			do
+			{
+				$this->db->where(key($wheres), current($wheres));
+			} while(next($wheres));
+		}
 		
+		return $this->db->delete($table);
+	}
 }
 
 ?>

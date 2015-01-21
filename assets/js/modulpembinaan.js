@@ -3,6 +3,17 @@
 var currentElementPembinaan;
 var ctxIdPembinaan;
 
+var pathAddPembinaan;
+var pathUpdatePembinaan;
+var pathDeletePembinaan;
+
+var id_kader;
+
+var postPembinaan =
+{
+	agenda: ''
+}
+
 function setCtxIdPembinaan(val)
 {
 	/* 
@@ -43,35 +54,47 @@ function showButtonPembinaan(id_btn)
 
 function addPembinaan(agenda)
 {
-	element = $(
-		"<tr>" +
-			"<td>" + agenda + "</td>" +
-			"<td><a href='#' class='btn-ubah-entri-pembinaan'><span class='glyphicon glyphicon-pencil'></span></a></td>" + 
-			"<td><a href='#' class='btn-hapus-entri-pembinaan'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +												
-		"</tr>"
-	);
+	postPembinaan.agenda = agenda;
 	
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri pembinaan berhasil ditambahkan');
-	
-	$( '#tabel_pembinaan' ).prepend(element);
-	applyUbahHapusListenerPembinaan(element);
+	$.post(pathAddPembinaan, postPembinaan, function(id){
+		console.log(id);
+		element = $(
+			"<tr data-id='" + id + "'>" +
+				"<td>" + agenda + "</td>" +
+				"<td><a href='#' class='btn-ubah-entri-pembinaan'><span class='glyphicon glyphicon-pencil'></span></a></td>" + 
+				"<td><a href='#' class='btn-hapus-entri-pembinaan'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +												
+			"</tr>"
+		);
+		
+		sendSuccess('Entri pembinaan berhasil ditambahkan');
+		
+		$( '#tabel_pembinaan' ).prepend(element);
+		applyUbahHapusListenerPembinaan(element);			
+	});
+
 }
 
 function updatePembinaan(element, agenda)
 {
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri kepanitiaan berhasil diubah');
+	postPembinaan.agenda = agenda;
+	id_entry = $(element).data('id');
 	
-	$(element).children('td:first-child').html(agenda);
+	$.post(pathUpdatePembinaan + '/' + id_entry, postPembinaan, function(id){
+		console.log(id);
+		sendSuccess('Entri kepanitiaan berhasil diubah');
+		$(element).children('td:first-child').html(agenda);
+	});
 }
 
 function removePembinaan(element)
 {
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri kepanitiaan berhasil dihapus');
+	id_entry = $(element).data('id');
 	
-	$(element).remove();
+	$.post(pathDeletePembinaan + '/' + id_entry, '', function(state){
+		console.log(state);
+		sendSuccess('Entri kepanitiaan berhasil dihapus');
+		$(element).remove();
+	});
 }				
 
 function closeModalPembinaan()
@@ -114,8 +137,12 @@ function applyUbahHapusListenerPembinaan(element)
 	
 }
 
-function setupPembinaan()
+function setupPembinaan(add, update, del)
 {	
+	pathAddPembinaan = add;
+	pathUpdatePembinaan = update;
+	pathDeletePembinaan = del;
+
 	$( '.btn-tambah-entri-pembinaan' ).click(function(){
 		$('#modal_pembinaan_label').html('Tambah Pembinaan');
 		showButtonPembinaan(0);
@@ -145,4 +172,5 @@ function setupPembinaan()
 	});
 	
 	applyUbahHapusListenerPembinaan('#tabel_pembinaan > tr');
+		
 }

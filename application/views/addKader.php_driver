@@ -1,0 +1,36 @@
+Test create kader
+<form action="addKader_P" method="POST">
+	<input type="text" name="nama_lengkap">
+	<input type="submit">
+</form>
+
+Test create kader AJAX
+<button id="damn">Test AJAX</button>
+
+<script>
+	$( '#damn' ).click(function(){
+		
+		postVar = 
+		{
+			nama_lengkap: 'Riandy Rahman Nugraha', 
+			nama_panggilan: '', 
+			nim: '13511014', 
+			jurusan: 'Teknik Informatika', 
+			angkatan: '2011', 
+			hp: '', 
+			email: 'riandyrn@gmail.com', 
+			tempat_lahir: '', 
+			tanggal_lahir: '', 
+			alamat_libur: '', 
+			alamat_bdg: '', 
+			asal_sma: '', 
+			hobi: '', 
+			kondisi_mentoring: '', 
+			data_akademik: ''
+		}
+		
+		$.post('addKader_P', postVar, function(data){
+			alert(data);
+		});
+	});
+</script>

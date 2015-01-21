@@ -1,7 +1,18 @@
-/*** CRUD Riwayat Pembinaan ***/
+/*** CRUD Riwayat Kepanitiaan ***/
 
 var currentElementKepanitiaan;
 var ctxIdKepanitiaan;
+
+var pathAddKepanitiaan;
+var pathUpdateKepanitiaan;
+var pathDeleteKepanitiaan;
+
+var postKepanitiaan =
+{
+	tahun: '',
+	kegiatan: '',
+	jabatan: ''
+}
 
 function setCtxIdKepanitiaan(val)
 {
@@ -43,39 +54,54 @@ function showButtonKepanitiaan(id_btn)
 
 function addKepanitiaan(tahun, kegiatan, jabatan)
 {
-	element = $(
-		"<tr>" +
-			"<td>" + tahun + "</td>" +
-			"<td>" + kegiatan + "</td>" +
-			"<td>" + jabatan +"</td>" +
-			"<td><a href='#' class='btn-ubah-entri-kepanitiaan'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
-			"<td><a href='#' class='btn-hapus-entri-kepanitiaan'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +											
-		"</tr>"
-	);
+	postKepanitiaan.tahun = tahun;
+	postKepanitiaan.kegiatan = kegiatan;
+	postKepanitiaan.jabatan = jabatan;
 	
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri kepanitiaan berhasil ditambahkan');
-	
-	$( '#tabel_kepanitiaan' ).prepend(element);
-	applyUbahHapusListenerKepanitiaan(element);
+	$.post(pathAddKepanitiaan, postKepanitiaan, function(id){
+		console.log(id);
+		element = $(
+			"<tr data-id=" + id + ">" +
+				"<td>" + tahun + "</td>" +
+				"<td>" + kegiatan + "</td>" +
+				"<td>" + jabatan +"</td>" +
+				"<td><a href='#' class='btn-ubah-entri-kepanitiaan'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
+				"<td><a href='#' class='btn-hapus-entri-kepanitiaan'><span class='glyphicon glyphicon-remove' style='color: red;'></span></a></td>" +											
+			"</tr>"
+		);
+		
+		sendSuccess('Entri kepanitiaan berhasil ditambahkan');
+		$( '#tabel_kepanitiaan' ).prepend(element);
+		applyUbahHapusListenerKepanitiaan(element);
+	});
 }
 
 function updateKepanitiaan(element, tahun, kegiatan, jabatan)
 {
-	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri kepanitiaan berhasil diubah');
+	postKepanitiaan.tahun = tahun;
+	postKepanitiaan.kegiatan = kegiatan;
+	postKepanitiaan.jabatan = jabatan;
 	
-	$(element).children('td:nth-child(1)').html(tahun);
-	$(element).children('td:nth-child(2)').html(kegiatan);
-	$(element).children('td:nth-child(3)').html(jabatan);
+	id_entry = $(element).data('id');
+	
+	$.post(pathUpdateKepanitiaan + '/' + id_entry, postKepanitiaan, function(id){		
+		$(element).children('td:nth-child(1)').html(tahun);
+		$(element).children('td:nth-child(2)').html(kegiatan);
+		$(element).children('td:nth-child(3)').html(jabatan);
+		
+		sendSuccess('Entri kepanitiaan berhasil diubah');
+	});
 }
 
 function removeKepanitiaan(element)
 {
 	//ini nanti ditambahin fungsi post
-	sendSuccess('Entri kepanitiaan berhasil dihapus');
+	id_entry = $(element).data('id');
 	
-	$(element).remove();
+	$.post(pathDeleteKepanitiaan + '/' + id_entry, '', function(){
+		sendSuccess('Entri kepanitiaan berhasil dihapus');		
+		$(element).remove();
+	});
 }				
 
 function closeModalKepanitiaan()
@@ -125,8 +151,12 @@ function applyUbahHapusListenerKepanitiaan(element)
 	
 }
 
-function setupKepanitiaan()
+function setupKepanitiaan(add, update, del)
 {	
+	pathAddKepanitiaan = add;
+	pathUpdateKepanitiaan = update;
+	pathDeleteKepanitiaan = del;
+	
 	$( '.btn-tambah-entri-kepanitiaan' ).click(function(){
 		$('#modal_kepanitiaan_label').html('Tambah Kepanitiaan');
 		showButtonKepanitiaan(0);

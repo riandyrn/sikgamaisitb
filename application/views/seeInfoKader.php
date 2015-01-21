@@ -1,8 +1,15 @@
 <div id="alert_container">
-	<div class="alert alert-success alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<span class="glyphicon glyphicon-ok"></span> Data kader baru berhasil ditambahkan
-	</div>
+	<?php if($success) { ?>
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<span class="glyphicon glyphicon-ok"></span> <?=$success;?>
+		</div>
+	<?php } else if($error) { ?>
+		<div class="alert alert-warning alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<span class="glyphicon glyphicon-remove"></span> <?=$error;?>
+		</div>
+	<?php } ?>
 </div>
 
 <div class="panel panel-default">
@@ -12,12 +19,12 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-2">
-				<img src="img.jpg" alt="" style="width: 100%; height: auto; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;">
+				<img src="<?=$assets;?>/img/img.jpg" alt="" style="width: 100%; height: auto; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;">
 				<p class="text-center" style="margin-top: 5px;">
-					<a href="addKader.html" class="btn btn-primary btn-sm btn-block">
+					<a href="<?=$base_path;?>updateInfoKader" class="btn btn-primary btn-sm btn-block">
 						<span class="glyphicon glyphicon-pencil"></span> Ubah Informasi
 					</a>
-					<a href="#" class="btn btn-primary btn-sm btn-block" style="margin-top: 3px;">
+					<a href="#" data-target="#modal_underdev" data-toggle="modal" class="btn btn-primary btn-sm btn-block" style="margin-top: 3px;">
 						<span class="glyphicon glyphicon-picture"></span> Upload Foto
 					</a>
 				</p>
@@ -39,65 +46,95 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="">Nama Lengkap:</label>
-								<p>Riandy Rahman Nugraha</p>
+								<p><?=$info_kader->nama_lengkap;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">Nama Panggilan:</label>
-								<p>Riandy</p>
+								<p><?=$info_kader->nama_panggilan;?></p>
 							</div>								
 							<div class="form-group">
 								<label for="">NIM:</label> 
-								<p>13511014</p>
+								<p><?=$info_kader->nim;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">Jurusan:</label> 
-								<p>Teknik Informatika</p>
+								<p><?=$info_kader->jurusan;?></p>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="">Angkatan:</label>
-								<p>2011</p>
+								<p><?=$info_kader->angkatan;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">No HP:</label>
-								<p>085793174788</p>
+								<p><?=$info_kader->hp;?></p>
 							</div>								
 							<div class="form-group">
 								<label for="">Email:</label> 
-								<p>riandyrn@gmail.com</p>
+								<p><?=$info_kader->email;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">TTL:</label> 
-								<p>Semarang, 26-Oct-1993</p>
+								<p><?=$info_kader->tempat_lahir;?>, <?=date('d-M-Y', strtotime($info_kader->tanggal_lahir));?></p>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="">Alamat Libur:</label>
-								<p>Komp. Graha Alam Raya W2/4, Margaluyu, Buah Batu, Bandung</p>
+								<p><?=$info_kader->alamat_libur;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">Alamat Bandung:</label>
-								<p>Komp. Graha Alam Raya W2/4, Margaluyu, Buah Batu, Bandung</p>
+								<p><?=$info_kader->alamat_bdg;?></p>
 							</div>								
 							<div class="form-group">
 								<label for="">Asal SMA:</label> 
-								<p>SMA Negeri 3 Bandung</p>
+								<p><?=$info_kader->asal_sma;?></p>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="">Hobi:</label> 
-								<p>Baca buku, main game</p>
+								<p><?=$info_kader->hobi;?></p>
 							</div>
 							<div class="form-group">
 								<label for="">Kondisi Mentoring:</label>
-								<p style="color: green;">sudah berjalan</p>
+								<?php 
+									switch($info_kader->kondisi_mentoring)
+									{
+										case 0:
+											echo "<p class='text-red'>belum ada kelompok</p>";
+											break;
+										case 1:
+											echo "<p class='text-yellow'>tidak berjalan</p>";
+											break;
+										case 2:
+											echo "<p class='text-green'>sudah mentoring</p>";
+											break;
+									}
+								?>
+								
 							</div>
 							<div class="form-group">
 								<label for="">Data Akademik:</label>
-								<p style="color: green;">diatas 3</p>
+								<?php 
+									switch($info_kader->data_akademik)
+									{
+										case 0:
+											echo "<p class='text-red'>kurang dari 1</p>";
+											break;
+										case 1:
+											echo "<p class='text-yellow'>diantara 1-2</p>";
+											break;
+										case 2:
+											echo "<p class='text-blue'>diantara 2-3</p>";
+											break;	
+										case 3:
+											echo "<p class='text-green'>diatas 3</p>";
+											break;
+									}
+								?>
 							</div>
 						</div>
 					</div>
@@ -118,20 +155,15 @@
 								</tr>
 							</thead>
 							<tbody id="tabel_organisasi">
-								<tr>
-									<td>2014</td>
-									<td>Gamais ITB</td>
-									<td>Kepala Divisi G-TECH</td>
-									<td><a href="#" class="btn-ubah-entri-organisasi"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-organisasi"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>
-								</tr>
-								<tr>
-									<td>2012</td>
-									<td>HMIF</td>
-									<td>Anggota biasa</td>
-									<td><a href="#" class="btn-ubah-entri-organisasi"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-organisasi"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>
-								</tr>
+								<?php foreach($riwayat_organisasi as $entry) { ?>
+									<tr data-id="<?=$entry->id;?>">
+										<td><?=$entry->tahun;?></td>
+										<td><?=$entry->organisasi;?></td>
+										<td><?=$entry->jabatan;?></td>
+										<td><a href="#" class="btn-ubah-entri-organisasi"><span class="glyphicon glyphicon-pencil"></span></a></td>
+										<td><a href="#" class="btn-hapus-entri-organisasi"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>
+									</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -152,20 +184,15 @@
 								</tr>
 							</thead>
 							<tbody id="tabel_kepanitiaan">
-								<tr>
-									<td>2014</td>
-									<td>LMD 170</td>
-									<td>Kepala Divisi Akomtrans</td>
-									<td><a href="#" class="btn-ubah-entri-kepanitiaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-kepanitiaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>												
-								</tr>
-								<tr>
-									<td>2014</td>
-									<td>LMD 171</td>
-									<td>Anggota biasa</td>
-									<td><a href="#" class="btn-ubah-entri-kepanitiaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-kepanitiaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>
-								</tr>
+								<?php foreach($riwayat_kepanitiaan as $entry) { ?>
+									<tr data-id="<?=$entry->id;?>">
+										<td><?=$entry->tahun;?></td>
+										<td><?=$entry->kegiatan;?></td>
+										<td><?=$entry->jabatan;?></td>
+										<td><a href="#" class="btn-ubah-entri-kepanitiaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
+										<td><a href="#" class="btn-hapus-entri-kepanitiaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>												
+									</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -184,16 +211,13 @@
 								</tr>
 							</thead>
 							<tbody id="tabel_pembinaan">
-								<tr>
-									<td>Simfoni Day 1</td>
-									<td><a href="#" class="btn-ubah-entri-pembinaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-pembinaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>												
-								</tr>
-								<tr>
-									<td>Simfoni Day 2</td>
-									<td><a href="#" class="btn-ubah-entri-pembinaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
-									<td><a href="#" class="btn-hapus-entri-pembinaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>
-								</tr>
+								<?php foreach($riwayat_pembinaan as $entry) { ?>
+									<tr data-id="<?=$entry->id;?>">
+										<td><?=$entry->agenda;?></td>
+										<td><a href="#" class="btn-ubah-entri-pembinaan"><span class="glyphicon glyphicon-pencil"></span></a></td>
+										<td><a href="#" class="btn-hapus-entri-pembinaan"><span class="glyphicon glyphicon-remove" style="color: red;"></span></a></td>												
+									</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -321,13 +345,13 @@
 				);
 			}
 		</script>
-		<script src="modulorganisasi.js"></script>
-		<script src="modulkepanitiaan.js"></script>
-		<script src="modulpembinaan.js"></script>
+		<script src="<?=$assets;?>/js/modulorganisasi.js"></script>
+		<script src="<?=$assets;?>/js/modulkepanitiaan.js"></script>
+		<script src="<?=$assets;?>/js/modulpembinaan.js"></script>
 		<script>
-			setupOrganisasi();
-			setupKepanitiaan();
-			setupPembinaan();
+			setupOrganisasi('<?=$base_path;?>addOrganisasi_P', '<?=$base_path;?>updateOrganisasi_P', '<?=$base_path;?>deleteOrganisasi_P');
+			setupKepanitiaan('<?=$base_path;?>addKepanitiaan_P', '<?=$base_path;?>updateKepanitiaan_P', '<?=$base_path;?>deleteKepanitiaan_P');
+			setupPembinaan('<?=$base_path;?>addPembinaan_P', '<?=$base_path;?>updatePembinaan_P', '<?=$base_path;?>deletePembinaan_P');
 			
 			setCtxIdPembinaan(1);
 			setCtxIdOrganisasi(1);
